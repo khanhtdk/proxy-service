@@ -33,6 +33,7 @@ pkgdel           = DEBIAN_FRONTEND=noninteractive apt remove -y --purge $(1)
 disable          = $(DISABLE) --now $(1)
 reload           = $(RELOAD) $(1)
 makeurl          = http://$(1):$(2)@$(PUBLIC_ADDR):$(PROXY_PORT)
+tolower          = $(shell echo $(1) | tr [:upper:] [:lower:])
 
 define enable
 $(ENABLED) $(1) || $(ENABLE) $(1); \
@@ -101,7 +102,7 @@ pkgs:
 	$(if $(del),$(call pkgdel,$(del)))
 
 config: /usr/bin/makepasswd
-	$(if $(user),,$(eval user := $(RANDOM_USER)))
+	$(if $(user),$(eval user := $(call tolower,$(user))),$(eval user := $(RANDOM_USER)))
 	$(if $(passwd),,$(eval passwd := $(RANDOM_PASSWD)))
 	$(file >$(PROXY_CONF_FILE),$(PROXY_CONF))
 	@htpasswd -cbm $(HTPASSWD_FILE) "$(user)" "$(passwd)"
