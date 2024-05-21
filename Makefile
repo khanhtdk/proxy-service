@@ -100,9 +100,9 @@ pkgs:
 	$(if $(add),$(call pkgadd,$(add) $(SUPPORT_PKGS)))
 	$(if $(del),$(call pkgdel,$(del)))
 
-config: user := $(RANDOM_USER)
-config: passwd := $(RANDOM_PASSWD)
-config:
+config: /usr/bin/makepasswd
+	$(if $(user),,$(eval user := $(RANDOM_USER)))
+	$(if $(passwd),,$(eval passwd := $(RANDOM_PASSWD)))
 	$(file >$(PROXY_CONF_FILE),$(PROXY_CONF))
 	@htpasswd -b -c $(HTPASSWD_FILE) "$(user)" "$(passwd)"
 	$(if $(save-url),$(file >$(save-url),$(call makeurl,$(user),$(passwd))))
