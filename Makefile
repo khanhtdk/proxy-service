@@ -104,7 +104,7 @@ config: /usr/bin/makepasswd
 	$(if $(user),,$(eval user := $(RANDOM_USER)))
 	$(if $(passwd),,$(eval passwd := $(RANDOM_PASSWD)))
 	$(file >$(PROXY_CONF_FILE),$(PROXY_CONF))
-	@htpasswd -b -c $(HTPASSWD_FILE) "$(user)" "$(passwd)"
+	@htpasswd -cbm $(HTPASSWD_FILE) "$(user)" "$(passwd)"
 	$(if $(save-url),$(file >$(save-url),$(call makeurl,$(user),$(passwd))))
 	$(if $(save-url),@echo "Proxy URL created and saved at '$(save-url)'")
 
