@@ -88,7 +88,7 @@ all:
 	$(info Reconfigure: sudo make reconf [params])
 
 .SILENT:
-install: Ubuntu pkgs config start
+install: pkgs config start
 	@echo Done!
 
 reconf: $(PROXY_CONF_FILE) $(HTPASSWD_FILE) config restart
@@ -115,9 +115,6 @@ start:
 restart:
 	@echo Reloading proxy ...
 	$(call reload,$(SQUID))
-
-Ubuntu:
-	test $$(lsb_release -i | awk '{print $$NF}') == $@
 
 uninstall: del = $(filter-out !%,$(PKGS))
 uninstall:
